@@ -14,7 +14,7 @@ serve(async (req) => {
 
   try {
     const { notebookId } = await req.json()
-    
+
     if (!notebookId) {
       return new Response(
         JSON.stringify({ error: 'Notebook ID is required' }),
@@ -73,7 +73,7 @@ serve(async (req) => {
           if (!audioResponse.ok) {
             const errorText = await audioResponse.text()
             console.error('Audio generation webhook failed:', errorText)
-            
+
             // Update status to failed
             await supabase
               .from('notebooks')
@@ -84,7 +84,7 @@ serve(async (req) => {
           }
         } catch (error) {
           console.error('Background audio generation error:', error)
-          
+
           // Update status to failed
           await supabase
             .from('notebooks')
@@ -101,21 +101,21 @@ serve(async (req) => {
         message: 'Audio generation started',
         status: 'generating'
       }),
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
 
   } catch (error) {
     console.error('Error in generate-audio-overview:', error)
     return new Response(
-      JSON.stringify({ 
-        error: error.message || 'Failed to start audio generation' 
+      JSON.stringify({
+        error: error.message || 'Failed to start audio generation'
       }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
   }

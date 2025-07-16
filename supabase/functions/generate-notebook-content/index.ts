@@ -33,7 +33,7 @@ serve(async (req) => {
         hasUrl: !!webServiceUrl,
         hasAuth: !!authHeader
       })
-      
+
       return new Response(
         JSON.stringify({ error: 'Web service configuration missing' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -69,7 +69,7 @@ serve(async (req) => {
         .select('content')
         .eq('notebook_id', notebookId)
         .single();
-      
+
       if (source?.content) {
         payload.content = source.content.substring(0, 5000); // Limit content size
       }
@@ -91,7 +91,7 @@ serve(async (req) => {
       console.error('Web service error:', response.status, response.statusText)
       const errorText = await response.text();
       console.error('Error response:', errorText);
-      
+
       // Update status to failed
       await supabaseClient
         .from('notebooks')
@@ -109,7 +109,7 @@ serve(async (req) => {
 
     // Parse the response format: object with output property
     let title, description, notebookIcon, backgroundColor, exampleQuestions;
-    
+
     if (generatedData && generatedData.output) {
       const output = generatedData.output;
       title = output.title;
@@ -119,7 +119,7 @@ serve(async (req) => {
       exampleQuestions = output.example_questions || [];
     } else {
       console.error('Unexpected response format:', generatedData)
-      
+
       await supabaseClient
         .from('notebooks')
         .update({ generation_status: 'failed' })
@@ -133,7 +133,7 @@ serve(async (req) => {
 
     if (!title) {
       console.error('No title returned from web service')
-      
+
       await supabaseClient
         .from('notebooks')
         .update({ generation_status: 'failed' })
@@ -169,14 +169,14 @@ serve(async (req) => {
     console.log('Successfully updated notebook with example questions:', exampleQuestions)
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        title, 
+      JSON.stringify({
+        success: true,
+        title,
         description,
         icon: notebookIcon,
         color: backgroundColor,
         exampleQuestions,
-        message: 'Notebook content generated successfully' 
+        message: 'Notebook content generated successfully'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )

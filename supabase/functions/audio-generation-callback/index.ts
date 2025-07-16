@@ -15,9 +15,9 @@ serve(async (req) => {
   try {
     const body = await req.json()
     console.log('Audio generation callback received:', body)
-    
+
     const { notebook_id, audio_url, status, error } = body
-    
+
     if (!notebook_id) {
       return new Response(
         JSON.stringify({ error: 'Notebook ID is required' }),
@@ -69,21 +69,21 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ success: true }),
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
 
   } catch (error) {
     console.error('Error in audio-generation-callback:', error)
     return new Response(
-      JSON.stringify({ 
-        error: error.message || 'Failed to process callback' 
+      JSON.stringify({
+        error: error.message || 'Failed to process callback'
       }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
   }

@@ -14,7 +14,7 @@ serve(async (req) => {
 
   try {
     const { type, notebookId, urls, title, content, timestamp } = await req.json();
-    
+
     console.log(`Webhook handler received ${type} request for notebook ${notebookId}`);
 
     // Get the webhook URL from Supabase secrets
@@ -31,7 +31,7 @@ serve(async (req) => {
 
     // Prepare the webhook payload
     let webhookPayload;
-    
+
     if (type === 'multiple-websites') {
       webhookPayload = {
         type: 'multiple-websites',
@@ -73,28 +73,28 @@ serve(async (req) => {
     const webhookResponse = await response.text();
     console.log('Webhook response:', webhookResponse);
 
-    return new Response(JSON.stringify({ 
-      success: true, 
+    return new Response(JSON.stringify({
+      success: true,
       message: `${type} data sent to webhook successfully`,
-      webhookResponse 
+      webhookResponse
     }), {
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        ...corsHeaders 
+        ...corsHeaders
       },
     });
 
   } catch (error) {
     console.error('Webhook handler error:', error);
-    
-    return new Response(JSON.stringify({ 
+
+    return new Response(JSON.stringify({
       error: error.message,
-      success: false 
+      success: false
     }), {
       status: 500,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        ...corsHeaders 
+        ...corsHeaders
       },
     });
   }

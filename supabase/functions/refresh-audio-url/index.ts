@@ -46,7 +46,7 @@ serve(async (req) => {
     // Assuming the URL format is similar to: .../storage/v1/object/sign/bucket/path
     const urlParts = notebook.audio_overview_url.split('/')
     const bucketIndex = urlParts.findIndex(part => part === 'audio')
-    
+
     if (bucketIndex === -1) {
       throw new Error('Invalid audio URL format')
     }
@@ -87,7 +87,7 @@ serve(async (req) => {
     console.log('Successfully refreshed audio URL for notebook:', notebookId)
 
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: true,
         audioUrl: signedUrlData.signedUrl,
         expiresAt: newExpiryTime.toISOString()
@@ -100,7 +100,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in refresh-audio-url function:', error)
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: error.message || 'Failed to refresh audio URL'
       }),
       {

@@ -30,7 +30,7 @@ serve(async (req) => {
 
     if (!webhookUrl) {
       console.error('Missing DOCUMENT_PROCESSING_WEBHOOK_URL environment variable')
-      
+
       // Initialize Supabase client to update status
       const supabaseClient = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
@@ -83,7 +83,7 @@ serve(async (req) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Webhook call failed:', response.status, errorText);
-      
+
       // Initialize Supabase client to update status
       const supabaseClient = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
