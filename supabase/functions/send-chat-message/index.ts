@@ -15,13 +15,13 @@ serve(async (req) => {
 
   try {
     const { session_id, message, user_id } = await req.json();
-
+    
     console.log('Received message:', { session_id, message, user_id });
 
     // Get the webhook URL and auth header from environment
     const webhookUrl = Deno.env.get('NOTEBOOK_CHAT_URL');
     const authHeader = Deno.env.get('NOTEBOOK_GENERATION_AUTH');
-
+    
     if (!webhookUrl) {
       throw new Error('NOTEBOOK_CHAT_URL environment variable not set');
     }
@@ -59,29 +59,28 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ success: true, data: webhookData }),
-      {
-        headers: {
+      { 
+        headers: { 
           ...corsHeaders,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json' 
+        } 
       }
     );
 
   } catch (error) {
     console.error('Error in send-chat-message:', error);
-
+    
     return new Response(
-      JSON.stringify({
-        error: error.message || 'Failed to send message to webhook'
+      JSON.stringify({ 
+        error: error.message || 'Failed to send message to webhook' 
       }),
-      {
+      { 
         status: 500,
-        headers: {
+        headers: { 
           ...corsHeaders,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json' 
         }
       }
     );
   }
 });
-
